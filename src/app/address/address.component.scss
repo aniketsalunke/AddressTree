@@ -7,17 +7,35 @@
     position: relative;
     top: 60px;
     height: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
 }
 
 .addr-card-style {
-    width: 100%;
-    height: 100%;
+    width: 75%;
+    height: 85%;
     margin-top: 40px;
     border-radius: 10px;
-    background-color: rgba(200, 200, 200, 0.6);
+    background-color: rgba(200, 200, 200, 0.8);
+}
+
+.json-card-style {
+    max-height: 250px;
+}
+
+.dropdown-card {
+    background-color: white;
+    border-radius: 10px;
+    padding: 10px;
 }
 
 .addr-header {
     display: flex;
     justify-content: center;
+}
+
+.struct-div {
+    height: 450px;
+    overflow-y: auto;
+    overflow-x: auto;
 }
