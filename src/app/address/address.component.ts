@@ -14,7 +14,7 @@ export class AddressComponent implements OnInit {
   filteredStates: any[] = [];
   filteredDistricts: any[] = [];
   filteresPlaces: any[] = [];
-  addressHeirarnchy = {};
+  addressHeirarnchy: any;
   selectedCountry: any;
   showStatesDopdown: boolean = false;
   showDistrictsDopdown: boolean = false;
@@ -65,6 +65,85 @@ export class AddressComponent implements OnInit {
       { id: "p15", parentId: "d8", name: "New Chennai" },
       { id: "p16", parentId: "d8", name: "Old Chennai" }
     ];
+    this.convertArrayToHeirarchy();
+  }
+
+  /**
+   * Method to create Heirarchy structure
+   */
+  convertArrayToHeirarchy() {
+    this.addressHeirarnchy = {
+      "countries": {}
+    }
+    //create country hierarchy
+    for (let i = 0; i <= this.countries.length - 1; i++) {
+      this.addressHeirarnchy["countries"] = { ...this.addressHeirarnchy["countries"], ...this.createHeirarchy(i, this.countries, "contryName", "states") }
+
+      //create states hierarchy
+      for (let j = 0; j <= this.states.length - 1; j++) {
+        this.addressHeirarnchy["countries"][this.countries[i].id]["states"] =
+          { ...this.addressHeirarnchy["countries"][this.countries[i].id]["states"], ...this.createHeirarchy(j, this.states, "stateName", "districts", this.countries[i].id) };
+
+        //create districts hierarchy
+        if (Object.keys(this.addressHeirarnchy["countries"][this.countries[i].id]["states"]).length != 0) {
+          for (let k = 0; k <= this.districts.length - 1; k++) {
+            if (this.addressHeirarnchy["countries"][this.countries[i].id]["states"][this.states[j].id]?.districts) {
+              this.addressHeirarnchy["countries"][this.countries[i].id]["states"][this.states[j].id]["districts"] =
+                { ...this.addressHeirarnchy["countries"][this.countries[i].id]["states"][this.states[j].id]["districts"], ...this.createHeirarchy(k, this.districts, "districtName", "places", this.states[j].id) };
+
+              //create places hierarchy
+              if (Object.keys(this.addressHeirarnchy["countries"][this.countries[i].id]["states"][this.states[j].id]["districts"]).length != 0) {
+                for (let l = 0; l <= this.places.length - 1; l++) {
+                  if (this.addressHeirarnchy["countries"][this.countries[i].id]["states"][this.states[j].id]["districts"][this.districts[k].id]?.places) {
+                    this.addressHeirarnchy["countries"][this.countries[i].id]["states"][this.states[j].id]["districts"][this.districts[k].id]["places"] =
+                      { ...this.addressHeirarnchy["countries"][this.countries[i].id]["states"][this.states[j].id]["districts"][this.districts[k].id]["places"], ...this.createHeirarchy(l, this.places, "placeName", "places", this.districts[k].id) };
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * 
+   * @param i 
+   * @param list 
+   * @param parentName 
+   * @param childName 
+   * @param parentAddId 
+   * @returns 
+   */
+  createHeirarchy(i: number, list: any, parentName: any, childName: any, parentAddId?: any) {
+    let addKey = list[i]['id'];
+    let addValue = list[i]['name']
+    if (parentName == "contryName") {
+      return {
+        [addKey]: {
+          [parentName]: addValue,
+          [childName]: {}
+        }
+      }
+    } else if (parentAddId == list[i].parentId) {
+      if (parentName == "placeName") {
+        return {
+          [addKey]: {
+            [parentName]: addValue
+          }
+        }
+      } else {
+        return {
+          [addKey]: {
+            [parentName]: addValue,
+            [childName]: {}
+          }
+        }
+      }
+    } else {
+      return false;
+    }
   }
 
   /**
@@ -99,6 +178,4 @@ export class AddressComponent implements OnInit {
       }
     }
   }
-
 }
-
