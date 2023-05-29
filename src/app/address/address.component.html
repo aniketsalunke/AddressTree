@@ -1,47 +1,54 @@
 <div class="addr-panel">
-    <mat-grid-list cols="3">
-        <mat-grid-tile></mat-grid-tile>
-        <mat-grid-tile>
-            <mat-card class="addr-card-style">
-                <div style="padding: 20px;">
-                    <h2 class="addr-header">Form To Update A Address</h2>
-                    <mat-card>
-                        <mat-form-field>
-                            <mat-label> Country Name </mat-label>
-                            <mat-select (selectionChange)="updateHeirarchy($event.value, 'country')">
-                                <mat-option *ngFor="let country of countries" [value]="country.id">
-                                    {{country.name}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                        <mat-form-field *ngIf="showStatesDopdown">
-                            <mat-label> State Name </mat-label>
-                            <mat-select (selectionChange)="updateHeirarchy($event.value, 'state')">
-                                <mat-option *ngFor="let state of filteredStates" [value]="state.id">
-                                    {{state.name}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                        <mat-form-field *ngIf="showDistrictsDopdown">
-                            <mat-label> District Name </mat-label>
-                            <mat-select (selectionChange)="updateHeirarchy($event.value, 'district')">
-                                <mat-option *ngFor="let district of filteredDistricts" [value]="district.id">
-                                    {{district.name}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                        <mat-form-field *ngIf="showPlacesDopdown">
-                            <mat-label> place Name </mat-label>
-                            <mat-select>
-                                <mat-option *ngFor="let place of filteresPlaces" [value]="place.id">
-                                    {{place.name}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </mat-card>
-                </div>
-            </mat-card>
-        </mat-grid-tile>
-        <mat-grid-tile></mat-grid-tile>
-    </mat-grid-list>
+    <mat-card class="addr-card-style">
+        <mat-card-header>
+            <h2 class="addr-header">Form To Update A Address</h2>
+        </mat-card-header>
+        <mat-card-content style="height: 85%;">
+            <div class="dropdown-card">
+                <mat-form-field>
+                    <mat-label> Country Name </mat-label>
+                    <mat-select (selectionChange)="updateHeirarchy($event.value, 'country')">
+                        <mat-option *ngFor="let country of countries" [value]="country.id">
+                            {{country.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field *ngIf="showStatesDopdown">
+                    <mat-label> State Name </mat-label>
+                    <mat-select (selectionChange)="updateHeirarchy($event.value, 'state')">
+                        <mat-option *ngFor="let state of filteredStates" [value]="state.id">
+                            {{state.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field *ngIf="showDistrictsDopdown">
+                    <mat-label> District Name </mat-label>
+                    <mat-select (selectionChange)="updateHeirarchy($event.value, 'district')">
+                        <mat-option *ngFor="let district of filteredDistricts" [value]="district.id">
+                            {{district.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field *ngIf="showPlacesDopdown">
+                    <mat-label> place Name </mat-label>
+                    <mat-select>
+                        <mat-option *ngFor="let place of filteresPlaces" [value]="place.id">
+                            {{place.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card class="addr-card-style">
+        <mat-card-header>
+            <h2 class="addr-header"> Json Response : </h2>
+        </mat-card-header>
+        <mat-card-content style="overflow-y: auto; height: 82%; background-color: white; padding: 10px;">
+            <div class="json-card-style">
+                <pre> Json output : {{ addressHeirarnchy | json }} </pre>
+            </div>
+        </mat-card-content>
+    </mat-card>
 </div>
